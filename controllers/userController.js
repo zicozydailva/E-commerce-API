@@ -16,7 +16,6 @@ const getSingleUser = async (req, res) => {
 }
 
 const showCurrentUser = async (req, res) => {
-    res.send("show user");
     
 }
 

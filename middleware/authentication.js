@@ -15,6 +15,20 @@ const authenticateUser = async (req, res, next) => {
   }
 };
 
+const authorizePermissions = (...role) => {
+    // if(req.user.role !== "admin") {
+    //     res.status(403).json("FORBIDDEN.. You're not authorized to access this route")
+    // }
+    // next()
+    return (req, res, next) => {
+        if(!role.includes(req.user.role)) {
+             res.status(403).json("FORBIDDEN.. You're not authorized to access this route")
+        }
+        next()
+    }
+}
+
 module.exports = {
   authenticateUser,
+  authorizePermissions
 };

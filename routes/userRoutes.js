@@ -4,9 +4,9 @@ const router = require("express").Router()
 
 
 router.get("/",[authenticateUser, authorizePermissions("admin", "owner")], getAllUsers)
-router.get("/showMe", showCurrentUser)
+router.get("/showMe", authenticateUser, showCurrentUser)
+router.patch("/updateUserPassword", authenticateUser, updateUserPassword)
 router.patch("/updateUser", updateUser)
-router.patch("/updateUserPassword", updateUserPassword)
 
 router.get("/:id", getSingleUser)
 

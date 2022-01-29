@@ -14,6 +14,7 @@ const notFoundMiddleware = require("./middleware/not-found")
 const errorHandlerMiddleware = require("./middleware/error-handler")
 
 const authRouter = require("./routes/authRoutes")
+const userRouter = require("./routes/userRoutes")
 
 app.get("/", (req, res) => {
   console.log(req.signedCookies);
@@ -26,6 +27,7 @@ app.use(morgan("tiny"))
 // Morgan middleware helps you track routes: appears on the console
 
 app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/users", userRouter)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)

@@ -28,11 +28,14 @@ const createReview = async (req, res) => {
 };
 
 const getAllReview = (req, res) => {
-  res.send("All review");
+  const reviews = await Review.find({})
+  res.status(200).json({count: review.length, reviews})
 };
 
 const getSingleReview = (req, res) => {
-  res.send("single review");
+  const review = await Review.findOne({_id: req.params.id})
+  !review && res.status(404).json(`review id: ${id} not found`)
+  res.status(200).json(review)
 };
 
 const updateReview = (req, res) => {

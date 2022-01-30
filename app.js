@@ -15,6 +15,7 @@ const errorHandlerMiddleware = require("./middleware/error-handler")
 
 const authRouter = require("./routes/authRoutes")
 const userRouter = require("./routes/userRoutes")
+const productRouter = require("./routes/productRoutes")
 
 app.get("/", (req, res) => {
   console.log(req.signedCookies);
@@ -28,6 +29,7 @@ app.use(morgan("tiny"))
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/users", userRouter)
+app.use("/api/v1/products", productRouter)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)

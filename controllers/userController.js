@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const { createTokenuser, attachCookiesToRes } = require("../utils");
+const { createTokenuser, attachCookiesToRes, checkPermissions } = require("../utils");
 
 const getAllUsers = async (req, res) => {
   const user = await User.find({ role: "user" }).select("-password");
@@ -11,6 +11,7 @@ const getSingleUser = async (req, res) => {
   const user = await User.findOne({ _id: req.params.id }).select("-password");
   !user && res.status(404).json(`No user with Id: ${req.params.id}`);
 
+  // checkPermissions(req.user, user._id)
   res.status(200).json(user);
 };
 
@@ -18,22 +19,45 @@ const showCurrentUser = async (req, res) => {
   res.status(200).json({ user: req.user });
 };
 
+
+// using findOneandUpdate
+// const updateUser = async (req, res) => {
+//   const { email, name } = req.body;
+//   if (!email || !name) {
+//     res.status(401).json("name and email fields are required");
+//   }
+//   const user = await User.findOneAndUpdate(
+//     { _id: req.user.userId },
+//     { email, name },
+//     { new: true, runValidators: true }
+//   );
+//   !user && res.status(404).json("User not found");
+
+//   const tokenUser = createTokenuser(user);
+//   attachCookiesToRes({ res, user: tokenUser });
+//   res.status(200).json({ user: tokenUser });
+// };
+
+
+// update with user.save()
 const updateUser = async (req, res) => {
   const { email, name } = req.body;
   if (!email || !name) {
     res.status(401).json("name and email fields are required");
   }
-  const user = await User.findOneAndUpdate(
-    { _id: req.user.userId },
-    { email, name },
-    { new: true, runValidators: true }
-  );
-  !user && res.status(404).json("User not found");
+  const user = await User.findOne({_id: req.user.userId});
+
+  user.email = email
+  user.name = name;
+  await user.save()
 
   const tokenUser = createTokenuser(user);
   attachCookiesToRes({ res, user: tokenUser });
   res.status(200).json({ user: tokenUser });
 };
+
+
+
 
 const updateUserPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;

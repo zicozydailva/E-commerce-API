@@ -29,7 +29,7 @@ const createReview = async (req, res) => {
 
 const getAllReview = async (req, res) => {
   const reviews = await Review.find({})
-  res.status(200).json({count: review.length, reviews})
+  res.status(200).json({count: reviews.length, reviews})
 };
 
 const getSingleReview =  async (req, res) => {

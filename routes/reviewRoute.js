@@ -11,9 +11,9 @@ const { authenticateUser } = require("../middleware/authentication");
 const router = require("express").Router();
 
 router.get("/", getAllUsers);
-router.post("/", createReview);
+router.post("/", authenticateUser, createReview);
 router.get("/:id", getSingleUser);
-router.patch("/:id", updateReview);
-router.delete("/:id", deleteReview);
+router.patch("/:id", authenticateUser,  updateReview);
+router.delete("/:id", authenticateUser, deleteReview);
 
 module.exports = router;
